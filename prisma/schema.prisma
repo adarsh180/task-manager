@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  avatar    String?
+  phone     String?
+  bio       String?
+  location  String?
+  examType  String?  // UPSC, NEET_UG, IIT_JEE, CSIR_UGC_NET, NEET_PG, CODING, DSA, AI_ML
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tasks         Task[]
+  notes         Note[]
+  pomodoroSessions PomodoroSession[]
+  chatSessions  ChatSession[]
+  timeEntries   TimeEntry[]
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("TODO")
+  priority    String   @default("MEDIUM")
+  dueDate     DateTime?
+  subject     String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pomodoroSessions PomodoroSession[]
+  timeEntries TimeEntry[]
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PomodoroSession {
+  id          String   @id @default(cuid())
+  duration    Int      // in minutes
+  type        String   @default("WORK")
+  completedAt DateTime @default(now())
+  userId      String
+  taskId      String?
+  subject     String?
+  topic       String?
+  subtopic    String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  task Task? @relation(fields: [taskId], references: [id], onDelete: SetNull)
+}
+
+model TimeEntry {
+  id        String   @id @default(cuid())
+  duration  Int      // in minutes
+  startTime DateTime
+  endTime   DateTime
+  taskId    String?
+  userId    String
+  subject   String?
+  topic     String?
+  subtopic  String?
+  createdAt DateTime @default(now())
+
+  task Task? @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ChatSession {
+  id        String   @id @default(cuid())
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages ChatMessage[]
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  content   String
+  role      String   // "user" or "assistant"
+  createdAt DateTime @default(now())
+  sessionId String
+
+  session ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+}

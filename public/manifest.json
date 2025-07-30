@@ -1,0 +1,16 @@
+{
+  "name": "Task Tracker Manager - AI Study Assistant",
+  "short_name": "TaskTracker",
+  "description": "AI-powered study assistant for competitive exams",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

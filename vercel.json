@@ -1,0 +1,16 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "env": {
+    "OPENROUTER_API_KEY": "@openrouter_api_key",
+    "JWT_SECRET": "@jwt_secret",
+    "DATABASE_URL": "@database_url"
+  }
+}
