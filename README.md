@@ -2,10 +2,14 @@
 
 A modern, real-time task management application built with Next.js 14, featuring AI chatbot integration, Pomodoro technique, note-taking, and comprehensive dashboard analytics. Specifically designed for UPSC, NEET UG, IIT/JEE, CSIR UGC-NET, NEET PG, Coding, DSA, and AI/ML aspirants.
 
+## Site Link
+https://taskmanager-MA.netlify.app
+
 ## Features
 
 - **AI Study Assistant**: ChatGPT-like interface with exam-specific training for UPSC, NEET, JEE, and more
-- **Authentication System**: Secure login/register with user profiles and exam preferences
+- **Enhanced Authentication**: Google OAuth integration with beautiful animated login/register pages
+- **Code Generation**: Advanced code block rendering with syntax highlighting and copy functionality
 - **Chat History**: Sidebar with chat sessions, create new chats, delete old conversations
 - **Dashboard**: Real-time statistics and overview of all activities
 - **Task Management**: Create, update, delete, and track tasks with priorities and due dates
@@ -13,14 +17,15 @@ A modern, real-time task management application built with Next.js 14, featuring
 - **Pomodoro Timer**: Built-in Pomodoro technique timer with session tracking
 - **Profile Management**: User profile with productivity insights and exam-specific stats
 - **Real-time Updates**: All data syncs in real-time across the application
+- **Modern UI/UX**: Beautiful animations, gradient backgrounds, and responsive design
 - **Dark/Light Theme**: Modern UI with theme switching support
 
 ## Tech Stack
 
 - **Frontend**: Next.js 14, TypeScript, Tailwind CSS, Shadcn/ui
 - **Backend**: Next.js API routes, Prisma ORM
-- **Database**: SQLite (easily configurable to PostgreSQL/MySQL)
-- **Authentication**: JWT tokens, bcryptjs for password hashing
+- **Database**: PostgreSQL (Neon.tech) with Prisma ORM
+- **Authentication**: NextAuth.js with Google OAuth, JWT tokens, bcryptjs for password hashing
 - **AI Integration**: DeepSeek API for exam-specific AI assistance
 - **UI Components**: Radix UI primitives with custom styling
 - **Real-time**: Server-sent events for live data updates
@@ -33,12 +38,15 @@ A modern, real-time task management application built with Next.js 14, featuring
    ```
 
 2. **Set up environment variables**:
-   - Copy `.env` and update with your values
-   - Add your DeepSeek API key to `DEEPSEEK_API_KEY`
-   - Generate secure JWT secrets
+   - Copy `.env.example` to `.env` and update with your values
+   - Add your OpenRouter API key for DeepSeek AI
+   - Configure Google OAuth credentials
+   - Set up Neon.tech PostgreSQL database URL
+   - Generate secure JWT and NextAuth secrets
 
 3. **Set up the database**:
    ```bash
+   npx prisma generate
    npx prisma db push
    ```
 
@@ -68,6 +76,12 @@ The application uses the following models:
 - `POST /api/init` - Database initialization
 
 ## Features in Detail
+
+### Enhanced Authentication
+- Google OAuth integration for quick signup/signin
+- Beautiful animated login/register pages
+- Secure JWT-based authentication
+- User profile management
 
 ### Dashboard
 - Real-time statistics cards
@@ -109,6 +123,21 @@ The application is highly customizable:
 - Add new task priorities in `prisma/schema.prisma`
 - Extend API functionality in `app/api/` routes
 
+## Environment Setup
+
+### Google OAuth Setup
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
+6. Copy Client ID and Client Secret to your `.env` file
+
+### Neon.tech Database Setup
+1. Sign up at [Neon.tech](https://neon.tech/)
+2. Create a new PostgreSQL database
+3. Copy the connection string to `DATABASE_URL` in your `.env` file
+
 ## Deployment
 
 The application can be deployed to any platform supporting Next.js:
@@ -117,7 +146,7 @@ The application can be deployed to any platform supporting Next.js:
 - Railway
 - Self-hosted
 
-For production, consider switching to PostgreSQL or MySQL by updating the Prisma schema.
+The application is already configured for PostgreSQL production deployment.
 
 ## Contributing
 

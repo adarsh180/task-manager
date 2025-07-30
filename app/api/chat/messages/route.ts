@@ -74,8 +74,8 @@ async function callAIAPI(messages: any[], examType?: string) {
     const lastUserMessage = userMessages[userMessages.length - 1]
     const customResponse = getCustomResponse(lastUserMessage.content)
     if (customResponse) {
-      // Add 10-20 second delay for custom responses
-      const delay = Math.floor(Math.random() * 10000) + 10000 // 10-20 seconds
+      // Add 3-7 second delay for custom responses
+      const delay = Math.floor(Math.random() * 4000) + 3000 // 3-7 seconds
       await new Promise(resolve => setTimeout(resolve, delay))
       return customResponse
     }
@@ -101,21 +101,23 @@ async function callAIAPI(messages: any[], examType?: string) {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-        'HTTP-Referer': 'http://localhost:3000',
+        'HTTP-Referer': 'https://taskmanager-ma.netlify.app',
         'X-Title': 'Task Tracker Manager'
       },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-r1-0528-qwen3-8b:free',
+        model: 'google/gemma-2-9b-it:free',
         messages: [
           { role: 'system', content: systemPrompt },
           ...messages
         ],
         temperature: 0.7,
-        max_tokens: 2000
+        max_tokens: 1500
       })
     })
 
     if (!response.ok) {
+      const errorData = await response.text()
+      console.error('API Error Response:', errorData)
       throw new Error(`AI API error: ${response.status}`)
     }
 
